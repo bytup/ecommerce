@@ -3,12 +3,16 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     products: [],
     currentProduct: null,
+    showMiniCart: false,
 };
 
 export const auth = createSlice({
     name: "cart",
     initialState,
     reducers: {
+        hideMiniCart: (state) => {
+            state.showMiniCart = false;
+        },
         addToCart: (state, action) => {
             const item = action.payload;
             const product = state.products.find(
@@ -20,6 +24,7 @@ export const auth = createSlice({
                 state.products.push(item);
             }
             state.currentProduct = item;
+            state.showMiniCart = true;
         },
         removeFromCart: (state, action) => {
             const item = action.payload;
@@ -67,6 +72,7 @@ export const {
     removeFromCart,
     emptyCart,
     decreaseProductInCart,
+    hideMiniCart,
 } = auth.actions;
 
 export default auth.reducer;

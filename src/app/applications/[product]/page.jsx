@@ -4,8 +4,7 @@ import React from "react";
 const ProductPage = ({ params: { product } }) => {
     return (
         <div className="container mx-auto">
-            <div className="">
-                <h1>{product}</h1>
+            <div className="my-5 py-5">
                 <ProductDetails
                     product={product}
                     apiRoute={`/applications/${product}`}

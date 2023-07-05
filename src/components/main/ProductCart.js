@@ -1,5 +1,5 @@
 import { Popover, Transition } from "@headlessui/react";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import LazyLoadingImage from "../LazyLoadingImage";
 import CheckoutModal from "./CheckoutModal";
@@ -39,7 +39,7 @@ const ProductCart = () => {
 
     return (
         <>
-            <div className="relative inline-block text-left z-50">
+            <div className="relative">
                 <Popover className="relative">
                     <>
                         <Popover.Button className="text-gray-600 flex gap-x-4 items-center">

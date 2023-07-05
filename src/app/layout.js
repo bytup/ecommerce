@@ -2,6 +2,7 @@ import ReduxProvider from "@/store/provider";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import NavBar from "@/components/Navbar";
+import MiniCart from "@/components/MiniCart";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,6 +17,7 @@ export default function RootLayout({ children }) {
             <body className={inter.className}>
                 <ReduxProvider>
                     <NavBar />
+                    <MiniCart />
                     {children}
                 </ReduxProvider>
             </body>
