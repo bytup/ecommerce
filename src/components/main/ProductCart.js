@@ -1,16 +1,20 @@
 import { Popover, Transition } from "@headlessui/react";
 import React, { Fragment, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import LazyLoadingImage from "../LazyLoadingImage";
 import CheckoutModal from "./CheckoutModal";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { removeFromCart } from "@/store/features/cart";
+import useCart from "@/hooks/useCart";
 
 const ProductCart = () => {
-    const { cart, _id } = useSelector((state) => state?.auth?.user);
+    const { products, _id } = useSelector((state) => state?.cart);
     const [isOpen, setIsOpen] = useState(false);
     const navigate = useRouter();
+    const dispatch = useDispatch();
+    const { total } = useCart();
 
     useEffect(() => {
         if (true) {
@@ -20,9 +24,18 @@ const ProductCart = () => {
 
     // find subtotal from cart
     let subtotal = 0;
-    cart?.forEach((item) => {
-        subtotal += item?.product?.price * item?.quantity;
-    });
+    // cart?.forEach((item) => {
+    //     subtotal += item?.product?.price * item?.quantity;
+    // });
+
+    const getPrice = (cost) => {
+        // trim the price to 2 decimal places
+        return cost.toFixed(4);
+    };
+
+    const handleRemove = (product) => () => {
+        dispatch(removeFromCart(product));
+    };
 
     return (
         <>
@@ -86,9 +99,9 @@ const ProductCart = () => {
                                         <h3 className="text-xl font-semibold">
                                             Shopping cart
                                         </h3>
-                                        {cart?.length ? (
+                                        {products?.length ? (
                                             <div className="divide-y divide-slate-100">
-                                                {cart?.map((crt) => (
+                                                {products?.map((crt) => (
                                                     <div
                                                         key={crt?._id}
                                                         className="flex py-5 last:pb-0"
@@ -125,28 +138,29 @@ const ProductCart = () => {
                                                                                         /\s/g,
                                                                                         "-"
                                                                                     )}/${
-                                                                                    crt
-                                                                                        ?.product
-                                                                                        ?._id
+                                                                                    crt?.InstanceId
                                                                                 }`}
                                                                             >
                                                                                 {
-                                                                                    crt
-                                                                                        ?.product
-                                                                                        ?.title
+                                                                                    crt?.ResourceGroup
                                                                                 }
                                                                             </Link>
                                                                         </h3>
+                                                                        <p className="text-sm text-gray-500">
+                                                                            {
+                                                                                crt?.Location
+                                                                            }
+                                                                        </p>
                                                                     </div>
                                                                     <div className="mt-0.5">
                                                                         <div className="flex items-center border-2 border-green-500 rounded-lg py-1 px-2 md:py-1.5 md:px-2.5 text-sm font-medium">
                                                                             <span className="text-green-500 !leading-none">
-                                                                                ৳
-                                                                                {
-                                                                                    crt
-                                                                                        ?.product
-                                                                                        ?.price
-                                                                                }
+                                                                                $
+                                                                                {getPrice(
+                                                                                    Number(
+                                                                                        crt?.Cost
+                                                                                    )
+                                                                                )}
                                                                             </span>
                                                                         </div>
                                                                     </div>
@@ -163,24 +177,11 @@ const ProductCart = () => {
                                                                     <button
                                                                         type="button"
                                                                         className="font-medium text-red-600"
-                                                                        onClick={() =>
-                                                                            removeFromCart(
-                                                                                {
-                                                                                    uid: _id,
-                                                                                    userData:
-                                                                                        {
-                                                                                            discard:
-                                                                                                {
-                                                                                                    _id: crt?._id,
-                                                                                                },
-                                                                                        },
-                                                                                }
-                                                                            )
-                                                                        }
+                                                                        onClick={handleRemove(
+                                                                            crt
+                                                                        )}
                                                                     >
-                                                                        {isCartLoading
-                                                                            ? "Removing..."
-                                                                            : "Remove"}
+                                                                        Remove
                                                                     </button>
                                                                 </div>
                                                             </div>
@@ -228,14 +229,14 @@ const ProductCart = () => {
                                                 </span>
                                             </span>
                                             <span className="">
-                                                ৳{subtotal}.00
+                                                ${getPrice(total)}.00
                                             </span>
                                         </p>
                                         <div className="flex space-x-2 mt-5">
                                             <button
                                                 className="nc-Button relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium py-3 px-4 sm:py-3.5 sm:px-6 disabled:bg-opacity-90 bg-slate-900 hover:bg-slate-800 text-slate-50 shadow-xl flex-1 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000"
                                                 onClick={() => setIsOpen(true)}
-                                                disabled={!cart?.length}
+                                                disabled={!products?.length}
                                             >
                                                 Check out
                                             </button>

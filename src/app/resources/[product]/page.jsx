@@ -8,7 +8,7 @@ const ProductPage = ({ params: { product } }) => {
                 <h1>{product}</h1>
                 <ProductDetails
                     product={product}
-                    apiRoute={`/applications/${product}`}
+                    apiRoute={`/resources/${product}`}
                 />
             </div>
         </div>

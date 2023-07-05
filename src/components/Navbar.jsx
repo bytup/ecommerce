@@ -77,7 +77,7 @@ export default function NavBar() {
                                 <ProductCart />
                             </li>
                             <li className="text-gray-600 hover:text-blue-600">
-                                <Profile />
+                                {/* <Profile /> */}
                             </li>
                         </ul>
                     </div>

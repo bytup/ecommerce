@@ -1,12 +1,12 @@
 import Products from "@/components/Products";
 import React from "react";
 
-const ApplicationsPage = () => {
+const ResourcesPage = () => {
     return (
         <div className="container mx-auto">
-            <Products title={"Applications"} apiRoute={"applications"} />
+            <Products title={"Resources"} apiRoute={"resources"} />
         </div>
     );
 };
 
-export default ApplicationsPage;
+export default ResourcesPage;
